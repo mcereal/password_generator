@@ -1,8 +1,13 @@
-const genBtn = document.getElementById("genBtn");
-const pwdResult = document.getElementById("pwdResult");
+// Assignment Code
+var generateBtn = document.querySelector("#generate");
 
-genBtn.addEventListener("click", testFunction);
+// Write password to the #password input
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
 
-function testFunction() {
-  pwdResult.innerHTML = "test";
+  passwordText.value = password;
 }
+
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
