@@ -58,7 +58,7 @@ function unicodeRetriever(decimalRange) {
   return character;
 }
 
-// parses key value pairs of unicode decimal ranges stored in UnicodeCharacters
+// parses key value pairs of unicode decimal ranges stored in unicodeCharacters
 
 function rangeAggregator(characterRangeKey) {
   length = characterRangeKey.length;
@@ -98,7 +98,8 @@ function userDesiredCharacters() {
         let userCharPrompt = prompt(
           "Do you want to use " + value[0] + " characters? Type y/n"
         );
-        value[1] = userCharPrompt;
+        // value[1] = userCharPrompt;
+        userSettingsUpdater(value, userCharPrompt);
       }
     }
   }
@@ -128,4 +129,13 @@ function rangeValidator(value) {
   return true;
 }
 
-function userSettingsUpdater(userPrompt) {}
+//updates userSettings character flags to true or false given user input
+
+function userSettingsUpdater(value, userPrompt) {
+  value[1] = userPrompt;
+  if (acceptableEntries.userFlagTrue.includes(value[1])) {
+    value[2] = true;
+  } else {
+    value[2] = false;
+  }
+}
