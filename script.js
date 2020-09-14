@@ -10,7 +10,7 @@ function writePassword() {
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", userDesiredCharacters);
+generateBtn.addEventListener("click", main);
 
 // ranges of Unicode characters in decimal
 
@@ -25,6 +25,28 @@ var unicodeCharacters = {
   alphabetLowerRange: [[97, 123]],
   numberRange: [[48, 58]],
 };
+
+//user character choices
+
+var userSettings = {
+  pwdLength: [null],
+  alphabetUpper: ["uppercase"],
+  alphabetLower: ["lowercase"],
+  specialChar: ["special"],
+  numbers: ["numbers"],
+};
+
+//valid user entries
+
+var acceptableEntries = {
+  passwordRange: [8, 128],
+  userFlagTrue: ["y", "Y", "yes", "Yes", "YES"],
+  userFlagFalse: ["n", "N", "no", "No", "NO"],
+};
+
+function main() {
+  userDesiredCharacters();
+}
 
 // returns an array of unicode characters given a corresponding range in decimal
 
@@ -60,38 +82,50 @@ var alphabetLowerCaseArray = rangeAggregator(
 var specialCharArray = rangeAggregator(unicodeCharacters.specialCharRange);
 var numbersArray = rangeAggregator(unicodeCharacters.numberRange);
 
-var userSettings = {
-  pwdLength: [0],
-  alphabetUpper: ["uppercase"],
-  alphabetLower: ["lowercase"],
-  specialChar: ["special"],
-  numbers: ["numbers"],
-};
-
-var acceptableEntries = {
-  userEntry: ["y", "n", "Y", "N", "yes", "no", "Yes", "No", "YES", "NO"],
-};
-
-//Prompts user for lowercase, uppercase, special characters, or numbers selection and validates input criteria
+//Prompts user for lowercase, uppercase, special characters, or numbers selection
 
 function userDesiredCharacters() {
   for (const [key, value] of Object.entries(userSettings)) {
     if (key === "pwdLength") {
-      while (value[0] < 8 || value[0] > 128) {
-        var desiredPwdLength = prompt(
+      while (rangeValidator(value[0]) != true) {
+        let desiredPwdLength = prompt(
           "How long do you want your password to be? Enter a number between 8 - 128"
         );
         value[0] = desiredPwdLength;
       }
     } else {
-      while (acceptableEntries.userEntry.includes(value[1]) != true) {
-        console.log(value[1]);
-        var userCharPrompt = prompt(
+      while (characterValidator(value[1]) != true) {
+        let userCharPrompt = prompt(
           "Do you want to use " + value[0] + " characters? Type y/n"
         );
         value[1] = userCharPrompt;
-        console.log(value[1]);
       }
     }
   }
 }
+
+// validates user entries for user character selection
+
+function characterValidator(value) {
+  while (
+    acceptableEntries.userFlagTrue.includes(value) ||
+    acceptableEntries.userFlagFalse.includes(value)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+// validates user entries for password length choice
+
+function rangeValidator(value) {
+  while (
+    value < acceptableEntries.passwordRange[0] ||
+    value > acceptableEntries.passwordRange[1]
+  ) {
+    return false;
+  }
+  return true;
+}
+
+function userSettingsUpdater(userPrompt) {}
