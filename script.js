@@ -10,12 +10,12 @@ function writePassword() {
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", userDesiredCharacters);
 
 // ranges of Unicode characters in decimal
 
 var unicodeCharacters = {
-  symbolRange: [
+  specialCharRange: [
     [33, 48],
     [58, 65],
     [91, 97],
@@ -57,13 +57,31 @@ var alphabetUpperCaseArray = rangeAggregator(
 var alphabetLowerCaseArray = rangeAggregator(
   unicodeCharacters.alphabetLowerRange
 );
-var symbolsArray = rangeAggregator(unicodeCharacters.symbolRange);
+var specialCharArray = rangeAggregator(unicodeCharacters.specialCharRange);
 var numbersArray = rangeAggregator(unicodeCharacters.numberRange);
 
-var defaultPwdLength = 12;
-var characterTypes = {
-  alphabetUpperCase: false,
-  alphbetLowerCase: true,
-  symbols: false,
-  numbers: false,
+var userSettings = {
+  pwdLength: [0],
+  alphabetUpper: ["uppercase", null],
+  alphabetLower: ["lowercase", null],
+  specialChar: ["special", null],
+  numbers: ["numbers", null],
 };
+
+function userDesiredCharacters() {
+  while (userSettings.pwdLength[0] < 8 || userSettings.pwdLength[0] > 128) {
+    var desiredPwdLength = prompt(
+      "How long do you want your password to be? Enter a number between 8 - 128"
+    );
+    userSettings.pwdLength[0] = desiredPwdLength;
+  }
+  // var userCharPrompt = prompt(
+  //   "Do you want to use " + userChoice + "characters? Type y/n"
+  // );
+
+  for (i = 1; i < Object.keys(userSettings).length; i++) {
+    // console.log(Object.keys(userSettings[i]));
+  }
+
+  // console.log(Object.keys(userSettings).length);
+}
