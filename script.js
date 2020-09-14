@@ -38,7 +38,7 @@ function unicodeRetriever(decimalRange) {
 
 // parses key value pairs of unicode decimal ranges stored in UnicodeCharacters
 
-function characterSettings(characterRangeKey) {
+function rangeAggregator(characterRangeKey) {
   length = characterRangeKey.length;
   var characterArray = [];
   for (var i = length; i--; ) {
@@ -51,12 +51,19 @@ function characterSettings(characterRangeKey) {
 
 //arrays of possible characters to use in password generation
 
-var alphabetUpperCase = characterSettings(unicodeCharacters.alphabetUpperRange);
-var alphabetLowerCase = characterSettings(unicodeCharacters.alphabetLowerRange);
-var symbols = characterSettings(unicodeCharacters.symbolRange);
-var numbers = characterSettings(unicodeCharacters.numberRange);
+var alphabetUpperCaseArray = rangeAggregator(
+  unicodeCharacters.alphabetUpperRange
+);
+var alphabetLowerCaseArray = rangeAggregator(
+  unicodeCharacters.alphabetLowerRange
+);
+var symbolsArray = rangeAggregator(unicodeCharacters.symbolRange);
+var numbersArray = rangeAggregator(unicodeCharacters.numberRange);
 
-console.log(alphabetLowerCase);
-console.log(alphabetUpperCase);
-console.log(symbols);
-console.log(numbers);
+var defaultPwdLength = 12;
+var characterTypes = {
+  alphabetUpperCase: false,
+  alphbetLowerCase: true,
+  symbols: false,
+  numbers: false,
+};
