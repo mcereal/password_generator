@@ -62,26 +62,36 @@ var numbersArray = rangeAggregator(unicodeCharacters.numberRange);
 
 var userSettings = {
   pwdLength: [0],
-  alphabetUpper: ["uppercase", null],
-  alphabetLower: ["lowercase", null],
-  specialChar: ["special", null],
-  numbers: ["numbers", null],
+  alphabetUpper: ["uppercase"],
+  alphabetLower: ["lowercase"],
+  specialChar: ["special"],
+  numbers: ["numbers"],
 };
 
+var acceptableEntries = {
+  userEntry: ["y", "n", "Y", "N", "yes", "no", "Yes", "No", "YES", "NO"],
+};
+
+//Prompts user for lowercase, uppercase, special characters, or numbers selection and validates input criteria
+
 function userDesiredCharacters() {
-  while (userSettings.pwdLength[0] < 8 || userSettings.pwdLength[0] > 128) {
-    var desiredPwdLength = prompt(
-      "How long do you want your password to be? Enter a number between 8 - 128"
-    );
-    userSettings.pwdLength[0] = desiredPwdLength;
+  for (const [key, value] of Object.entries(userSettings)) {
+    if (key === "pwdLength") {
+      while (value[0] < 8 || value[0] > 128) {
+        var desiredPwdLength = prompt(
+          "How long do you want your password to be? Enter a number between 8 - 128"
+        );
+        value[0] = desiredPwdLength;
+      }
+    } else {
+      while (acceptableEntries.userEntry.includes(value[1]) != true) {
+        console.log(value[1]);
+        var userCharPrompt = prompt(
+          "Do you want to use " + value[0] + " characters? Type y/n"
+        );
+        value[1] = userCharPrompt;
+        console.log(value[1]);
+      }
+    }
   }
-  // var userCharPrompt = prompt(
-  //   "Do you want to use " + userChoice + "characters? Type y/n"
-  // );
-
-  for (i = 1; i < Object.keys(userSettings).length; i++) {
-    // console.log(Object.keys(userSettings[i]));
-  }
-
-  // console.log(Object.keys(userSettings).length);
 }
