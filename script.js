@@ -14,31 +14,36 @@ generateBtn.addEventListener("click", main);
 
 // ranges of Unicode characters in decimal
 
-var unicodeCharacters = {
-  specialCharRange: [
-    [33, 48],
-    [58, 65],
-    [91, 97],
-    [123, 127],
-  ],
-  alphabetUpperRange: [[65, 91]],
-  alphabetLowerRange: [[97, 123]],
-  numberRange: [[48, 58]],
-};
+// var unicodeCharacters = {
+//   specialCharRange: [
+//     [33, 48],
+//     [58, 65],
+//     [91, 97],
+//     [123, 127],
+//   ],
+//   alphabetUpperRange: [[65, 91]],
+//   alphabetLowerRange: [[97, 123]],
+//   numberRange: [[48, 58]],
+// };
 
-//user character choices
+//user character, length, entry settings, and ranges of Unicode characters in decimal
 
 var userSettings = {
   pwdLength: [null],
-  alphabetUpper: ["uppercase"],
-  alphabetLower: ["lowercase"],
-  specialChar: ["special"],
-  numbers: ["numbers"],
-};
-
-//valid user entries
-
-var acceptableEntries = {
+  alphabetUpper: [[null], [false], ["uppercase"], [[65, 91]]],
+  alphabetLower: [[null], [false], ["lowercase"], [[97, 123]]],
+  specialChar: [
+    [null],
+    [false],
+    ["special"],
+    [
+      [33, 48],
+      [58, 65],
+      [91, 97],
+      [123, 127],
+    ],
+  ],
+  numbers: [[null], [false], ["numbers"], [[48, 58]]],
   passwordRange: [8, 128],
   userFlagTrue: ["y", "Y", "yes", "Yes", "YES"],
   userFlagFalse: ["n", "N", "no", "No", "NO"],
@@ -46,6 +51,7 @@ var acceptableEntries = {
 
 function main() {
   userDesiredCharacters();
+  passwordArrayConstructor();
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
@@ -71,36 +77,31 @@ function rangeAggregator(characterRangeKey) {
   return characterArray;
 }
 
-//arrays of possible characters to use in password generation
-
-var alphabetUpperCaseArray = rangeAggregator(
-  unicodeCharacters.alphabetUpperRange
-);
-var alphabetLowerCaseArray = rangeAggregator(
-  unicodeCharacters.alphabetLowerRange
-);
-var specialCharArray = rangeAggregator(unicodeCharacters.specialCharRange);
-var numbersArray = rangeAggregator(unicodeCharacters.numberRange);
-
 //Prompts user for lowercase, uppercase, special characters, or numbers selection
 
 function userDesiredCharacters() {
   for (const [key, value] of Object.entries(userSettings)) {
-    if (key === "pwdLength") {
+    if (key.includes("pwdLength")) {
       while (rangeValidator(value[0]) != true) {
         let desiredPwdLength = prompt(
           "How long do you want your password to be? Enter a number between 8 - 128"
         );
         value[0] = desiredPwdLength;
       }
-    } else {
-      while (characterValidator(value[1]) != true) {
+    } else if (
+      key.includes("alphabetUpper") ||
+      key.includes("alphabetLower") ||
+      key.includes("specialChar") ||
+      key.includes("numbers")
+    ) {
+      while (characterValidator(value[0]) != true) {
         let userCharPrompt = prompt(
-          "Do you want to use " + value[0] + " characters? Type y/n"
+          "Do you want to use " + value[2] + " characters? Type y/n"
         );
-        // value[1] = userCharPrompt;
         userSettingsUpdater(value, userCharPrompt);
       }
+    } else {
+      return;
     }
   }
 }
@@ -109,8 +110,8 @@ function userDesiredCharacters() {
 
 function characterValidator(value) {
   while (
-    acceptableEntries.userFlagTrue.includes(value) ||
-    acceptableEntries.userFlagFalse.includes(value)
+    userSettings.userFlagTrue.includes(value) ||
+    userSettings.userFlagFalse.includes(value)
   ) {
     return true;
   }
@@ -121,8 +122,8 @@ function characterValidator(value) {
 
 function rangeValidator(value) {
   while (
-    value < acceptableEntries.passwordRange[0] ||
-    value > acceptableEntries.passwordRange[1]
+    value < userSettings.passwordRange[0] ||
+    value > userSettings.passwordRange[1]
   ) {
     return false;
   }
@@ -132,10 +133,20 @@ function rangeValidator(value) {
 //updates userSettings character flags to true or false given user input
 
 function userSettingsUpdater(value, userPrompt) {
-  value[1] = userPrompt;
-  if (acceptableEntries.userFlagTrue.includes(value[1])) {
-    value[2] = true;
+  value[0] = userPrompt;
+  if (userSettings.userFlagTrue.includes(value[0])) {
+    value[1] = true;
   } else {
-    value[2] = false;
+    value[1] = false;
   }
+}
+
+function passwordArrayConstructor() {
+  let passwordCharacters = [];
+  if (userSettings.specialChar[2]) {
+    passwordCharacters = passwordCharacters.concat(
+      rangeAggregator(userSettings.specialChar[3])
+    );
+  }
+  console.log(passwordCharacters);
 }
