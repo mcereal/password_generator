@@ -32,11 +32,13 @@ var passwordSettings = {
   passwordRange: [8, 128],
   userFlagTrue: ["y", "Y", "yes", "Yes", "YES"],
   userFlagFalse: ["n", "N", "no", "No", "NO"],
+  reset: false,
 };
 
 function main() {
   userDesiredCharacters();
   writePassword();
+  // reset();
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
@@ -155,4 +157,26 @@ function generatePassword() {
     password = password.concat(charOptions[randomNumber(charOptions)]);
   }
   return password;
+}
+
+//asks the user if they want to reset their selections and then resets if true
+function reset() {
+  let resetConfirmation = confirm(
+    "Select Ok to reset character options and password length. If you select cancel you can still generate a new password with your previous selections"
+  );
+  if (resetConfirmation) {
+    for (const [key, value] of Object.entries(passwordSettings)) {
+      if (key.includes("pwdLength")) {
+        value[0] = null;
+      } else if (
+        key.includes("alphabetUpper") ||
+        key.includes("alphabetLower") ||
+        key.includes("specialChar") ||
+        key.includes("numbers")
+      ) {
+        value[0] = null;
+        value[1] = false;
+      }
+    }
+  }
 }
