@@ -1,3 +1,5 @@
+![Screen Shot 2020-09-15 at 6 06 01 PM](https://user-images.githubusercontent.com/5081876/93270169-81922500-f77e-11ea-9606-d891b78d3359.png)
+
 # JavaScript: Password Generator
 
 This application will generate a random password based on user-selected criteria.
