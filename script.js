@@ -5,7 +5,7 @@ const generateBtn = document.querySelector("#generate");
 generateBtn.addEventListener("click", main);
 
 //user character, length, entry settings, and ranges of Unicode characters in decimal
-var passwordSettings = {
+let passwordSettings = {
   pwdLength: [null],
   alphabetUpper: [[null], [false], ["uppercase"], [[65, 91]]],
   alphabetLower: [[null], [false], ["lowercase"], [[97, 123]]],
@@ -32,9 +32,7 @@ function main() {
   if (passwordSettings.reset === false) {
     userDesiredCharacters();
     writePassword();
-    console.log(passwordSettings.reset);
     reset();
-    console.log(passwordSettings.reset);
   } else {
     reset();
     userDesiredCharacters();
@@ -51,7 +49,7 @@ function unicodeRetriever(decimalRange) {
   return character;
 }
 
-// parses key value pairs of unicode decimal ranges stored in unicodeCharacters
+// parses key value pairs of unicode decimal ranges stored in passwordSettings
 function rangeAggregator(characterRangeKey) {
   length = characterRangeKey.length;
   let characterArray = [];
