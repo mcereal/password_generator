@@ -24,17 +24,20 @@ let passwordSettings = {
   passwordRange: [8, 128],
   userFlagTrue: ["y", "Y", "yes", "Yes", "YES"],
   userFlagFalse: ["n", "N", "no", "No", "NO"],
+  voidEntry: false,
   reset: false,
 };
 
 // App entry point
 function main() {
   if (passwordSettings.reset === false) {
+    userPasswordLength();
     userDesiredCharacters();
     writePassword();
     reset();
   } else {
     reset();
+    userPasswordLength();
     userDesiredCharacters();
     writePassword();
   }
@@ -61,8 +64,8 @@ function rangeAggregator(characterRangeKey) {
   return characterArray;
 }
 
-// Prompts user for lowercase, uppercase, special characters, or numbers selection
-function userDesiredCharacters() {
+// Prompts user for password length selection
+function userPasswordLength() {
   for (const [key, value] of Object.entries(passwordSettings)) {
     if (key.includes("pwdLength")) {
       while (numberValidator(value[0]) != true) {
@@ -74,7 +77,14 @@ function userDesiredCharacters() {
         );
         value[0] = desiredPwdLength;
       }
-    } else if (
+    }
+  }
+}
+
+// Prompts user for lowercase, uppercase, special characters, or numbers selection
+function userDesiredCharacters() {
+  for (const [key, value] of Object.entries(passwordSettings)) {
+    if (
       key.includes("alphabetUpper") ||
       key.includes("alphabetLower") ||
       key.includes("specialChar") ||
@@ -86,8 +96,6 @@ function userDesiredCharacters() {
         );
         passwordSettingsUpdater(value, userCharPrompt);
       }
-    } else {
-      return;
     }
   }
 }
@@ -142,6 +150,32 @@ function characterOptionsConstructor() {
     }
   }
   return passwordCharacters;
+}
+
+function voidEntryCheck() {
+  if (passwordSettings.voidEntry === true) {
+    let emptyOptionsAlert = alert(
+      "You muse select at least one character option"
+    );
+    userDesiredCharacters();
+  } else {
+    let emptyCounter = 0;
+    for (const [key, value] of Object.entries(passwordSettings)) {
+      if (
+        key.includes("alphabetUpper") ||
+        key.includes("alphabetLower") ||
+        key.includes("specialChar") ||
+        key.includes("numbers")
+      ) {
+        if (value[1] === false) {
+          emptyCounter++;
+        }
+      }
+    }
+    if (emptyCounter === 4) {
+      passwordSettings.voidEntry = true;
+    }
+  }
 }
 
 // Generates a random number in password length range
