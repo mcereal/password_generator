@@ -13,7 +13,6 @@ function writePassword() {
 generateBtn.addEventListener("click", main);
 
 //user character, length, entry settings, and ranges of Unicode characters in decimal
-
 var userSettings = {
   pwdLength: [null],
   alphabetUpper: [[null], [false], ["uppercase"], [[65, 91]]],
@@ -41,7 +40,6 @@ function main() {
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
-
 function unicodeRetriever(decimalRange) {
   var character = [];
   for (i = decimalRange[0]; i < decimalRange[1]; i++) {
@@ -51,7 +49,6 @@ function unicodeRetriever(decimalRange) {
 }
 
 // parses key value pairs of unicode decimal ranges stored in unicodeCharacters
-
 function rangeAggregator(characterRangeKey) {
   length = characterRangeKey.length;
   var characterArray = [];
@@ -64,7 +61,6 @@ function rangeAggregator(characterRangeKey) {
 }
 
 //Prompts user for lowercase, uppercase, special characters, or numbers selection
-
 function userDesiredCharacters() {
   for (const [key, value] of Object.entries(userSettings)) {
     if (key.includes("pwdLength")) {
@@ -93,7 +89,6 @@ function userDesiredCharacters() {
 }
 
 // validates user entries for user character selection
-
 function characterValidator(value) {
   while (
     userSettings.userFlagTrue.includes(value) ||
@@ -105,7 +100,6 @@ function characterValidator(value) {
 }
 
 // validates user entries for password length choice
-
 function rangeValidator(value) {
   while (
     value < userSettings.passwordRange[0] ||
@@ -117,7 +111,6 @@ function rangeValidator(value) {
 }
 
 //updates userSettings character flags to true or false given user input
-
 function userSettingsUpdater(value, userPrompt) {
   value[0] = userPrompt;
   if (userSettings.userFlagTrue.includes(value[0])) {
@@ -128,7 +121,6 @@ function userSettingsUpdater(value, userPrompt) {
 }
 
 //builds an array of all possible password characters given user's choice
-
 function characterOptionsConstructor() {
   let passwordCharacters = [];
   for (const [key, value] of Object.entries(userSettings)) {
@@ -149,17 +141,18 @@ function characterOptionsConstructor() {
 }
 
 //generates a random number in password length range
-
-function randomNumber() {
-  let min = userSettings.passwordRange[0];
-  let max = userSettings.passwordRange[1];
-  return Math.random() * (max - min) + min;
+function randomNumber(arrayLength) {
+  let min = 0;
+  let max = arrayLength.length;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// returns a string that is the user's password
 function passwordGenerator() {
-  password = [];
+  password = "";
+  let charOptions = characterOptionsConstructor();
   for (i = 0; i < userSettings.pwdLength[0]; i++) {
-    password.push(characterOptionsConstructor[i]);
+    password = password.concat(charOptions[randomNumber(charOptions)]);
   }
   return password;
 }
