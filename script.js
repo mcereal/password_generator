@@ -4,7 +4,7 @@ const generateBtn = document.querySelector("#generate");
 // Add event listener to generate button
 generateBtn.addEventListener("click", main);
 
-//user character, length, entry settings, and ranges of Unicode characters in decimal
+// User character, length, entry settings, and ranges of Unicode characters in decimal
 let passwordSettings = {
   pwdLength: [null],
   alphabetUpper: [[null], [false], ["uppercase"], [[65, 91]]],
@@ -27,7 +27,7 @@ let passwordSettings = {
   reset: false,
 };
 
-//app entry point
+// App entry point
 function main() {
   if (passwordSettings.reset === false) {
     userDesiredCharacters();
@@ -40,7 +40,7 @@ function main() {
   }
 }
 
-// returns an array of unicode characters given a corresponding range in decimal
+// Returns an array of unicode characters given a corresponding range in decimal
 function unicodeRetriever(decimalRange) {
   let character = [];
   for (i = decimalRange[0]; i < decimalRange[1]; i++) {
@@ -49,7 +49,7 @@ function unicodeRetriever(decimalRange) {
   return character;
 }
 
-// parses key value pairs of unicode decimal ranges stored in passwordSettings
+// Parses key value pairs of unicode decimal ranges stored in passwordSettings
 function rangeAggregator(characterRangeKey) {
   length = characterRangeKey.length;
   let characterArray = [];
@@ -61,7 +61,7 @@ function rangeAggregator(characterRangeKey) {
   return characterArray;
 }
 
-//Prompts user for lowercase, uppercase, special characters, or numbers selection
+// Prompts user for lowercase, uppercase, special characters, or numbers selection
 function userDesiredCharacters() {
   for (const [key, value] of Object.entries(passwordSettings)) {
     if (key.includes("pwdLength")) {
@@ -92,7 +92,7 @@ function userDesiredCharacters() {
   }
 }
 
-// validates user entries for user character selection
+// Validates user entries for user character selection
 function characterValidator(value) {
   while (
     passwordSettings.userFlagTrue.includes(value) ||
@@ -103,7 +103,7 @@ function characterValidator(value) {
   return false;
 }
 
-// validates user entries for password length choice
+// Validates user entries for password length choice
 function numberValidator(value) {
   while (
     value < passwordSettings.passwordRange[0] ||
@@ -114,7 +114,7 @@ function numberValidator(value) {
   return true;
 }
 
-//updates passwordSettings character flags to true or false given user input
+// Updates passwordSettings character flags to true or false given user input
 function passwordSettingsUpdater(value, userPrompt) {
   value[0] = userPrompt;
   if (passwordSettings.userFlagTrue.includes(value[0])) {
@@ -124,7 +124,7 @@ function passwordSettingsUpdater(value, userPrompt) {
   }
 }
 
-//builds an array of all possible password characters given user's choice
+// Builds an array of all possible password characters given user's choice
 function characterOptionsConstructor() {
   let passwordCharacters = [];
   for (const [key, value] of Object.entries(passwordSettings)) {
@@ -144,14 +144,14 @@ function characterOptionsConstructor() {
   return passwordCharacters;
 }
 
-//generates a random number in password length range
+// Generates a random number in password length range
 function randomNumber(arrayLength) {
   let min = 0;
   let max = arrayLength.length;
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-// returns a string that is the user's password
+// Returns a string that is the user's password
 function generatePassword() {
   let password = "";
   let charOptions = characterOptionsConstructor();
@@ -169,7 +169,7 @@ function writePassword() {
   passwordText.value = password;
 }
 
-//asks the user if they want to reset their selections and then resets if true
+// Asks the user if they want to reset their selections and then resets if true
 function reset() {
   if (passwordSettings.reset === true) {
     let resetConfirmation = confirm(
