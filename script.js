@@ -12,20 +12,6 @@ function writePassword() {
 // Add event listener to generate button
 generateBtn.addEventListener("click", main);
 
-// ranges of Unicode characters in decimal
-
-// var unicodeCharacters = {
-//   specialCharRange: [
-//     [33, 48],
-//     [58, 65],
-//     [91, 97],
-//     [123, 127],
-//   ],
-//   alphabetUpperRange: [[65, 91]],
-//   alphabetLowerRange: [[97, 123]],
-//   numberRange: [[48, 58]],
-// };
-
 //user character, length, entry settings, and ranges of Unicode characters in decimal
 
 var userSettings = {
@@ -51,7 +37,7 @@ var userSettings = {
 
 function main() {
   userDesiredCharacters();
-  characterOptionsConstructor();
+  console.log(passwordGenerator());
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
@@ -141,6 +127,8 @@ function userSettingsUpdater(value, userPrompt) {
   }
 }
 
+//builds an array of all possible password characters given user's choice
+
 function characterOptionsConstructor() {
   let passwordCharacters = [];
   for (const [key, value] of Object.entries(userSettings)) {
@@ -157,5 +145,21 @@ function characterOptionsConstructor() {
       }
     }
   }
-  console.log(passwordCharacters);
+  return passwordCharacters;
+}
+
+//generates a random number in password length range
+
+function randomNumber() {
+  let min = userSettings.passwordRange[0];
+  let max = userSettings.passwordRange[1];
+  return Math.random() * (max - min) + min;
+}
+
+function passwordGenerator() {
+  password = [];
+  for (i = 0; i < userSettings.pwdLength[0]; i++) {
+    password.push(characterOptionsConstructor[i]);
+  }
+  return password;
 }
