@@ -36,12 +36,13 @@ var userSettings = {
 
 function main() {
   userDesiredCharacters();
-  console.log(passwordGenerator());
+  console.log(generatePassword());
+  writePassword();
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
 function unicodeRetriever(decimalRange) {
-  var character = [];
+  let character = [];
   for (i = decimalRange[0]; i < decimalRange[1]; i++) {
     character.push(String.fromCharCode(i));
   }
@@ -51,8 +52,8 @@ function unicodeRetriever(decimalRange) {
 // parses key value pairs of unicode decimal ranges stored in unicodeCharacters
 function rangeAggregator(characterRangeKey) {
   length = characterRangeKey.length;
-  var characterArray = [];
-  for (var i = length; i--; ) {
+  let characterArray = [];
+  for (let i = length; i--; ) {
     characterArray = characterArray.concat(
       unicodeRetriever(characterRangeKey[i])
     );
@@ -148,8 +149,8 @@ function randomNumber(arrayLength) {
 }
 
 // returns a string that is the user's password
-function passwordGenerator() {
-  password = "";
+function generatePassword() {
+  let password = "";
   let charOptions = characterOptionsConstructor();
   for (i = 0; i < userSettings.pwdLength[0]; i++) {
     password = password.concat(charOptions[randomNumber(charOptions)]);
