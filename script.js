@@ -66,9 +66,12 @@ function rangeAggregator(characterRangeKey) {
 function userDesiredCharacters() {
   for (const [key, value] of Object.entries(passwordSettings)) {
     if (key.includes("pwdLength")) {
-      while (numberVa(value[0]) != true) {
+      while (numberValidator(value[0]) != true) {
         let desiredPwdLength = prompt(
-          "How long do you want your password to be? Enter a number between 8 - 128"
+          "How long do you want your password to be? Enter a number between " +
+            passwordSettings.passwordRange[0] +
+            " - " +
+            passwordSettings.passwordRange[1]
         );
         value[0] = desiredPwdLength;
       }
@@ -102,7 +105,7 @@ function characterValidator(value) {
 }
 
 // validates user entries for password length choice
-function numberVa(value) {
+function numberValidator(value) {
   while (
     value < passwordSettings.passwordRange[0] ||
     value > passwordSettings.passwordRange[1]
