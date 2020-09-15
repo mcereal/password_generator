@@ -51,7 +51,7 @@ var userSettings = {
 
 function main() {
   userDesiredCharacters();
-  passwordArrayConstructor();
+  characterOptionsConstructor();
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
@@ -141,12 +141,21 @@ function userSettingsUpdater(value, userPrompt) {
   }
 }
 
-function passwordArrayConstructor() {
+function characterOptionsConstructor() {
   let passwordCharacters = [];
-  if (userSettings.specialChar[2]) {
-    passwordCharacters = passwordCharacters.concat(
-      rangeAggregator(userSettings.specialChar[3])
-    );
+  for (const [key, value] of Object.entries(userSettings)) {
+    if (
+      key.includes("alphabetUpper") ||
+      key.includes("alphabetLower") ||
+      key.includes("specialChar") ||
+      key.includes("numbers")
+    ) {
+      if (value[1]) {
+        passwordCharacters = passwordCharacters.concat(
+          rangeAggregator(value[3])
+        );
+      }
+    }
   }
   console.log(passwordCharacters);
 }
