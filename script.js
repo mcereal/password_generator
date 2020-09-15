@@ -1,14 +1,6 @@
 // Assignment Code
 const generateBtn = document.querySelector("#generate");
 
-// Write password to the #password input
-function writePassword() {
-  let password = generatePassword();
-  let passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-}
-
 // Add event listener to generate button
 generateBtn.addEventListener("click", main);
 
@@ -35,10 +27,19 @@ var passwordSettings = {
   reset: false,
 };
 
+//app entry point
 function main() {
-  userDesiredCharacters();
-  writePassword();
-  // reset();
+  if (passwordSettings.reset === false) {
+    userDesiredCharacters();
+    writePassword();
+    console.log(passwordSettings.reset);
+    reset();
+    console.log(passwordSettings.reset);
+  } else {
+    reset();
+    userDesiredCharacters();
+    writePassword();
+  }
 }
 
 // returns an array of unicode characters given a corresponding range in decimal
@@ -162,24 +163,36 @@ function generatePassword() {
   return password;
 }
 
+// Write password to the #password input
+function writePassword() {
+  let password = generatePassword();
+  let passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+}
+
 //asks the user if they want to reset their selections and then resets if true
 function reset() {
-  let resetConfirmation = confirm(
-    "Select Ok to reset character options and password length. If you select cancel you can still generate a new password with your previous selections"
-  );
-  if (resetConfirmation) {
-    for (const [key, value] of Object.entries(passwordSettings)) {
-      if (key.includes("pwdLength")) {
-        value[0] = null;
-      } else if (
-        key.includes("alphabetUpper") ||
-        key.includes("alphabetLower") ||
-        key.includes("specialChar") ||
-        key.includes("numbers")
-      ) {
-        value[0] = null;
-        value[1] = false;
+  if (passwordSettings.reset === true) {
+    let resetConfirmation = confirm(
+      "Select Ok to reset character options and password length. If you select cancel you can still generate a new password with your previous selections"
+    );
+    if (resetConfirmation) {
+      for (const [key, value] of Object.entries(passwordSettings)) {
+        if (key.includes("pwdLength")) {
+          value[0] = null;
+        } else if (
+          key.includes("alphabetUpper") ||
+          key.includes("alphabetLower") ||
+          key.includes("specialChar") ||
+          key.includes("numbers")
+        ) {
+          value[0] = null;
+          value[1] = false;
+        }
       }
     }
+  } else {
+    passwordSettings.reset = true;
   }
 }
