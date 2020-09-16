@@ -8,4 +8,6 @@ This is a browser based application powered by Javascript.
 
 The user will be able to select options for password length, uppercase letters, lowercase letters, special character, and numbers.
 
-The user can generate as many passwords as desired an can change their selected options.
+The user can generate as many passwords as desired.
+
+The user can reset their choices and start over.
