@@ -33,11 +33,11 @@ function main() {
   if (passwordSettings.reset === false) {
     userPasswordLength();
     userDesiredCharacters();
+    voidEntryCheck();
     writePassword();
-    reset();
+    // passwordSettings.reset = false;
   } else {
     reset();
-    userPasswordLength();
     userDesiredCharacters();
     writePassword();
   }
@@ -152,32 +152,6 @@ function characterOptionsConstructor() {
   return passwordCharacters;
 }
 
-function voidEntryCheck() {
-  if (passwordSettings.voidEntry === true) {
-    let emptyOptionsAlert = alert(
-      "You muse select at least one character option"
-    );
-    userDesiredCharacters();
-  } else {
-    let emptyCounter = 0;
-    for (const [key, value] of Object.entries(passwordSettings)) {
-      if (
-        key.includes("alphabetUpper") ||
-        key.includes("alphabetLower") ||
-        key.includes("specialChar") ||
-        key.includes("numbers")
-      ) {
-        if (value[1] === false) {
-          emptyCounter++;
-        }
-      }
-    }
-    if (emptyCounter === 4) {
-      passwordSettings.voidEntry = true;
-    }
-  }
-}
-
 // Generates a random number in password length range
 function randomNumber(arrayLength) {
   let min = 0;
@@ -185,10 +159,24 @@ function randomNumber(arrayLength) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+//checks to make sure user selected at least one character option
+function voidEntryCheck() {
+  let charOptions = characterOptionsConstructor();
+  while (charOptions.length === 0) {
+    let resetConfirmation = confirm(
+      "You must select at least one character option"
+    );
+    reset();
+    passwordSettings.reset = true;
+    main();
+    charOptions = characterOptionsConstructor();
+  }
+}
+
 // Returns a string that is the user's password
 function generatePassword() {
-  let password = "";
   let charOptions = characterOptionsConstructor();
+  let password = "";
   for (i = 0; i < passwordSettings.pwdLength[0]; i++) {
     password = password.concat(charOptions[randomNumber(charOptions)]);
   }
@@ -205,26 +193,15 @@ function writePassword() {
 
 // Asks the user if they want to reset their selections and then resets if true
 function reset() {
-  if (passwordSettings.reset === true) {
-    let resetConfirmation = confirm(
-      "Select Ok to reset character options and password length. If you select cancel you can still generate a new password with your previous selections"
-    );
-    if (resetConfirmation) {
-      for (const [key, value] of Object.entries(passwordSettings)) {
-        if (key.includes("pwdLength")) {
-          value[0] = null;
-        } else if (
-          key.includes("alphabetUpper") ||
-          key.includes("alphabetLower") ||
-          key.includes("specialChar") ||
-          key.includes("numbers")
-        ) {
-          value[0] = null;
-          value[1] = false;
-        }
-      }
+  for (const [key, value] of Object.entries(passwordSettings)) {
+    if (
+      key.includes("alphabetUpper") ||
+      key.includes("alphabetLower") ||
+      key.includes("specialChar") ||
+      key.includes("numbers")
+    ) {
+      value[0] = null;
+      value[1] = false;
     }
-  } else {
-    passwordSettings.reset = true;
   }
 }
