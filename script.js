@@ -6,7 +6,7 @@ generateBtn.addEventListener("click", main);
 
 // User character, length, entry settings, and ranges of Unicode characters in decimal
 let passwordSettings = {
-  pwdLength: [null],
+  pwdLength: [0],
   alphabetUpper: [[null], [false], ["uppercase"], [[65, 91]]],
   alphabetLower: [[null], [false], ["lowercase"], [[97, 123]]],
   specialChar: [
@@ -113,13 +113,15 @@ function characterValidator(value) {
 
 // Validates user entries for password length choice
 function numberValidator(value) {
-  while (
+  if (
+    isNaN(value) ||
     value < passwordSettings.passwordRange[0] ||
     value > passwordSettings.passwordRange[1]
   ) {
     return false;
+  } else {
+    return true;
   }
-  return true;
 }
 
 // Updates passwordSettings character flags to true or false given user input
